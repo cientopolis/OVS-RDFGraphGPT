@@ -17,10 +17,13 @@
             <div class="col-4">
                 <div class="d-grid gap-3" role="group" aria-label="Vertical radio toggle button group">
                     {% for pregunta in preguntas %}
-                        <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio-{{ pregunta.id }}" 
+                        <input type="radio" class="btn-check pregunta-radio" name="vbtn-radio" id="vbtn-radio-{{ pregunta.id }}" 
                         autocomplete="off" 
-                        {% if loop.first %}checked{% endif %} 
-                        onclick="updateSelectedQuestion('{{ pregunta.pregunta }}', '{{ pregunta.query }}', '{{ pregunta.respuesta }}')">
+                        {% if loop.first %}checked{% endif %}
+                        data-question="{{ pregunta.pregunta | escape }}"
+                        data-sparql="{{ pregunta.query | escape }}"
+                        data-response="{{ pregunta.respuesta | escape }}"
+                        onclick="updateSelectedQuestionFromData(this)">
                         <label class="btn btn-outline w-100 boton-basico" for="vbtn-radio-{{ pregunta.id }}">{{ pregunta.pregunta }}</label>
                     {% endfor %}
                 </div>

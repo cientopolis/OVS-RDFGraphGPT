@@ -140,13 +140,8 @@ def questions():
         )
         for item in data
     ]
-    print(preguntas[0].pregunta)
-    print("-------")
 
     for item in preguntas:
-        print(f"Pregunta : {item.pregunta}")
+        print(f"query : {item.query}")
 
     return render_template('questions.html', preguntas=preguntas)
-
-
-#poetry run flask --app index run
