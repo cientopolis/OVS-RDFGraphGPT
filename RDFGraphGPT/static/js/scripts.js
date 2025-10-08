@@ -3,8 +3,9 @@
   let selectedRespuesta = null;
 
 
-// Función principal que se llama desde los radio buttons
+
 function updateSelectedQuestionFromData(element) {
+  // Esta es la función que se llama desde los botones
     const question = element.getAttribute('data-question');
     const sparql = element.getAttribute('data-sparql');
     const response = element.getAttribute('data-response');
@@ -14,13 +15,13 @@ function updateSelectedQuestionFromData(element) {
     selectedQuery = sparql;
     selectedRespuesta = response;
 
-    // Actualizar la UI
+    // Actualizar la interfaz
     document.getElementById("titulo-pregunta").innerText = question;
     document.getElementById("query-pregunta").innerText = sparql;
     document.getElementById("respuesta-pregunta").textContent = "";
 }
 
-// Función para mostrar la respuesta (se mantiene igual)
+
 function updateResponse() {
     if (!selectedRespuesta) {
         alert("Primero seleccioná una pregunta");
@@ -29,7 +30,7 @@ function updateResponse() {
     document.getElementById("respuesta-pregunta").innerText = selectedRespuesta;
 }
 
-  // Dejo la función original por las dudas
+  // Dejo la función original por las dudas. Deprecated
   function updateSelectedQuestion(pregunta, query, respuesta) {
       selectedPregunta = pregunta;
       selectedQuery = query;
@@ -41,23 +42,7 @@ function updateResponse() {
   }
 
 
-  function updateResponse() {
-    if (!selectedRespuesta) {
-      alert("Primero seleccioná una pregunta");
-      return;
-    }
-    document.getElementById("respuesta-pregunta").innerText = selectedRespuesta;
-
-  }
-
   //logica para loading de botones
   const btn = document.getElementById('btn');
   const btnCargando = document.getElementById('btnCargando');
 
-  // este btn no existe
-
-  //btn.addEventListener('click', () => {
-
-    //btn.style.display = 'none';
-    //btnCargando.style.display = 'inline-block';
-  //});
