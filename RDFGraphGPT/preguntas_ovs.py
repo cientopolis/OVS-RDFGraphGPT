@@ -15,7 +15,7 @@ class PreguntaOVS:
             f"pregunta='{self.pregunta}', "
             f"query='{self.query}', "
             f"respuesta='{self.respuesta}', "
-            f"grafo='{self.grafo[:30]}...')"  # corto el grafo por si es largo
+            f"grafo='"  # corto el grafo por si es largo
         )
 
     def to_dict(self) -> dict:

@@ -3,6 +3,7 @@
   let selectedRespuesta = null;
 
   function updateSelectedQuestion(pregunta, query, respuesta) {
+    console.log(pregunta);
     selectedPregunta = pregunta;
     selectedQuery = query;
     selectedRespuesta = respuesta;
@@ -25,6 +26,7 @@
   const btn = document.getElementById('btn');
   const btnCargando = document.getElementById('btnCargando');
 
+  // este btn no existe
 
   btn.addEventListener('click', () => {
 

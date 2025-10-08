@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, url_for
 from RDFGraphGPT import generate_graph, generate_graph_having_rdf, search_file, get_files_in_directory, generate_ovs_graph
 from RDFGraphGPT import graph_from_file as gff
 import os
+import json
 
 from RDFGraphGPT.preguntas_ovs import PreguntaOVS
 
@@ -112,35 +113,39 @@ def ovs_new_instance():
 
 @app.route("/questions", methods=["GET", "POST"])
 def questions():
+
     if request.method == "POST":
         # Handle the form submission
         pass
     
-    p1 = PreguntaOVS(
-        id="001",
-        pregunta="¿Cuál es el precio del local?",
-        query="SELECT ?precio WHERE { ... }",
-        respuesta="El precio del local es de $1000.",
-        grafo="io:listing_site2_A1405300735 ..."
-    )
 
-    p2 = PreguntaOVS(
-        id="002",
-        pregunta="¿Dónde está ubicado el local?",
-        query="SELECT ?direccion WHERE { ... }",
-        respuesta="El local está ubicado en la calle Falsa 123.",
-        grafo="io:feature_address_real_estate_site2_A1405300735 ..."
-    )
-        
-    p3 = PreguntaOVS(
-        id="003",
-        pregunta="¿Cuáles son las características del local?",
-        query="SELECT ?caracteristicas WHERE { ... }",
-        respuesta="El local tiene 3 habitaciones y 2 baños.",
-        grafo="io:feature_caracteristicas_real_estate_site2_A1405300735 ..."
-    )
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    preguntas: List[PreguntaOVS] = [p1, p2, p3]
+    json_path = os.path.join(BASE_DIR, 'ovs.json')
+
+    print(json_path)
+
+    # Leer el archivo y convertirlo a string
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)          
+        json_str = json.dumps(data)
+
+    preguntas = [
+        PreguntaOVS(
+            id=item.get('id'),
+            pregunta=item.get('question'),
+            query=item.get('sparql'),
+            respuesta=item.get('response_llm'),
+            grafo=item.get('triplets')
+        )
+        for item in data
+    ]
+    print(preguntas[0].pregunta)
+    print("-------")
+
+    for item in preguntas:
+        print(f"Pregunta : {item.pregunta}")
+
     return render_template('questions.html', preguntas=preguntas)
 
 
