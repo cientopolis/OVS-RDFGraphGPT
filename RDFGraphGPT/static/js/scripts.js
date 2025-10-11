@@ -4,8 +4,6 @@ let selectedRespuesta = null;
 let selectedId = null;
 let selectedTriplets = null;
 
-
-
 function updateSelectedQuestionFromData(element) {
   // Esta es la función que se llama desde los botones
   const id = element.getAttribute('data-id');
@@ -29,7 +27,6 @@ function updateSelectedQuestionFromData(element) {
   // Limpiar gráfico anterior
   showNoDataChart("Ejecutá la pregunta para ver la visualización");
 }
-
 
 function updateResponse() {
   if (!selectedRespuesta) {
