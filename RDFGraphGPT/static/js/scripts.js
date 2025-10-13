@@ -25,6 +25,7 @@ function updateSelectedQuestionFromData(element) {
   document.getElementById("respuesta-pregunta").textContent = "";
 
   // Limpiar gráfico anterior
+  clearCurrentChart();
   showNoDataChart("Ejecutá la pregunta para ver la visualización");
 }
 
@@ -43,7 +44,7 @@ function generateChartFromResponse() {
   if (selectedId === "001" && selectedTriplets && selectedTriplets.results && selectedTriplets.results.bindings) {
     generateLineChartFromTriplets(selectedTriplets);
   } else if (selectedId === "003" && selectedTriplets && selectedTriplets.results && selectedTriplets.results.bindings) {
-    generateNetworkChartFromTriplets(selectedTriplets);
+    generateMapChartFromTriplets(selectedTriplets);
   } else {
     showNoDataChart("Gráfico no disponible para esta pregunta");
   }
@@ -64,3 +65,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+// Variable global para mantener referencia al mapa actual
+let currentMapChart = null;
+
+// Función para limpiar el gráfico/mapa actual
+function clearCurrentChart() {
+  // Si hay un mapa activo, destruirlo
+  if (currentMapChart && currentMapChart.destroy) {
+    currentMapChart.destroy();
+    currentMapChart = null;
+  }
+  
+  // Limpiar el contenedor
+  if (chartManager) {
+    chartManager.clear();
+  }
+}
+
+// Función mejorada para generar mapa desde triplets
+function generateMapChartFromTriplets(triplets) {
+  // Limpiar mapa anterior
+  clearCurrentChart();
+  
+  if (!chartManager) {
+    initializeChartManager();
+  }
+
+  // Crear el nuevo mapa
+  currentMapChart = new MapChart(chartManager);
+  currentMapChart.create(triplets, {
+    defaultZoom: 13,
+    markerColor: '#376889ff'
+  });
+}
