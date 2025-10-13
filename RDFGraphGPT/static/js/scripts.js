@@ -27,7 +27,14 @@ function updateResponse() {
         alert("Primero seleccioná una pregunta");
         return;
     }
-    document.getElementById("respuesta-pregunta").innerText = selectedRespuesta;
+
+    const respuestaElem = document.getElementById("respuesta-pregunta");
+    respuestaElem.innerText = "Ejecutando con el agente de IA...";
+
+    setTimeout(() => {
+        respuestaElem.innerText = selectedRespuesta;
+        
+    }, 1500);
 }
 
   // Dejo la función original por las dudas. Deprecated
@@ -39,6 +46,11 @@ function updateResponse() {
       document.getElementById("titulo-pregunta").innerText = pregunta;
       document.getElementById("query-pregunta").innerText = query;
       document.getElementById("respuesta-pregunta").textContent = respuesta;
+  }
+
+  function showGraph(){
+    const graph = document.getElementById("graph-container");
+        graph.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
 

@@ -2,59 +2,71 @@
 {% block title %}Preguntas{% endblock %}
 
 {% block content %}
-    <h2 class="fw-light">Preguntas para el grafo de OVS</h2>
-    <p class="fst-italic">Podés seleccionar una pregunta y ver el codigo SPARQL que la traslada al grafo. Además, al ejecutar la query verás la respuesta en lenguaje natural a la pregunta y el grafico correspondiente.</p>
-    <div class="container d-flex flex-column vh-100">
-        <div class="row align-items-center">
-            <div class="col-4">
-                <h5>Preguntas OVS</h5>
+<div class="container py-4">
+    <h2 class="fw-light text-center mb-3">Preguntas para el grafo de OVS</h2>
+    <p class="fst-italic text-center mb-4">
+        Podés seleccionar una pregunta y ver el código SPARQL que la traslada al grafo.
+        Además, al ejecutar la query verás la respuesta en lenguaje natural y el gráfico correspondiente.
+    </p>
+
+    <div class="row g-4">
+        <!-- Columna de preguntas -->
+        <div class="col-12 col-md-4 d-flex flex-column">
+            <h5 class="mb-3 text-primary">Preguntas OVS</h5>
+
+            <!-- Listado -->
+            <div class="d-grid gap-2 mb-3" role="group" aria-label="Vertical radio toggle button group">
+                {% for pregunta in preguntas %}
+                <input type="radio" class="btn-check pregunta-radio" name="vbtn-radio" id="vbtn-radio-{{ pregunta.id }}"
+                    autocomplete="off" {% if loop.first %}checked{% endif %}
+                    data-question="{{ pregunta.pregunta | escape }}" data-sparql="{{ pregunta.query | escape }}"
+                    data-response="{{ pregunta.respuesta | escape }}" onclick="updateSelectedQuestionFromData(this)">
+                <label class="btn btn-outline w-100 boton-basico text-start" for="vbtn-radio-{{ pregunta.id }}">
+                    {{ pregunta.pregunta }}
+                </label>
+                {% endfor %}
             </div>
-            <div class="col-8">
-                <h5>Pregunta seleccionada</h5>
+
+            <!-- 🔽 Botón Ejecutar -->
+            <div class="text-end mb-3">
+                <button class="btn boton-basico" onclick="updateResponse()">Ejecutar query ⬇️</button>
+            </div>
+
+            <!-- 🔽 Respuesta debajo del botón -->
+            <div id="respuesta-container" class="bg-light rounded border p-3">
+                <h6 class="text-primary mb-2">Respuesta</h6>
+                <p id="respuesta-pregunta" class="mb-0">{{preguntas[0].respuesta}}</p>
+                <div class="text-end mt-2">
+                    <button class="btn btn-sm boton-basico" onclick="showGraph()">Ver en el grafo</button>
+                </div>
             </div>
         </div>
-        <div class="row align-items-start">
-            <div class="col-4">
-                <div class="d-grid gap-3" role="group" aria-label="Vertical radio toggle button group">
-                    {% for pregunta in preguntas %}
-                        <input type="radio" class="btn-check pregunta-radio" name="vbtn-radio" id="vbtn-radio-{{ pregunta.id }}" 
-                        autocomplete="off" 
-                        {% if loop.first %}checked{% endif %}
-                        data-question="{{ pregunta.pregunta | escape }}"
-                        data-sparql="{{ pregunta.query | escape }}"
-                        data-response="{{ pregunta.respuesta | escape }}"
-                        onclick="updateSelectedQuestionFromData(this)">
-                        <label class="btn btn-outline w-100 boton-basico" for="vbtn-radio-{{ pregunta.id }}">{{ pregunta.pregunta }}</label>
-                    {% endfor %}
+
+        <!-- Columna de detalle -->
+        <div class="col-12 col-md-8">
+            <h5 class="mb-3 text-primary">Pregunta seleccionada</h5>
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" id="titulo-pregunta">{{preguntas[0].pregunta}}</h5>
+                    <pre class="card-text bg-light p-3 rounded border flex-grow-1" id="query-pregunta"
+                        style="font-size: 0.8rem; line-height: 1.15; white-space: pre-wrap; word-break: break-word;">
+            {{preguntas[0].query}}
+          </pre>
                 </div>
-            </div>
-            <div class="col-8">
-                <div class="card" style="border-color: #376889ff;">
-                    <div class="card-body">
-                        <h5 class="card-title" id="titulo-pregunta">{{preguntas[0].pregunta}}</h5>
-                        <p class="card-text" id="query-pregunta">{{preguntas[0].query}}</p>
-                        <div class="mt-auto d-flex justify-content-end">
-                            <button class="btn boton-basico" onclick="updateResponse()">Ejecutar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row flex-grow-1 mt-3">
-            <div class="col-4">
-                <div class="card h-50" style="border-color: #376889ff;">
-                    <div class="card-body">
-                        <h5 class="card-title">Respuesta</h5>
-                        <p class="card-text" id="respuesta-pregunta">{{preguntas[0].respuesta}}</p>
-                        <div class="mt-auto d-flex justify-content-end">
-                            <button class="btn boton-basico" onclick="showGraph()">Ver en el grafo</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-8">
             </div>
         </div>
     </div>
-    <script src="../static/js/scripts.js"></script>
+
+    <!-- Grafo -->
+    <div class="row g-4 mt-4">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <div id="graph-container"
+                class="w-100 border rounded bg-light d-flex justify-content-center align-items-center p-4">
+                <p class="text-muted fst-italic m-0">El grafo aparecerá acá...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/scripts.js"></script>
 {% endblock %}
