@@ -322,17 +322,6 @@
                     {
                         "realEstate": {
                             "type": "uri",
-                            "value": "http://www.semanticweb.org/luciana/ontologies/2024/8/inmontology#real_estate_site3_47138560"
-                        },
-                        "wkt": {
-                            "type": "literal",
-                            "value": "<http://www.opengis.net/def/crs/EPSG/0/4326> POINT(-57.9581372 -34.9255775)",
-                            "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral"
-                        }
-                    },
-                    {
-                        "realEstate": {
-                            "type": "uri",
                             "value": "http://www.semanticweb.org/luciana/ontologies/2024/8/inmontology#real_estate_site3_47168470"
                         },
                         "wkt": {

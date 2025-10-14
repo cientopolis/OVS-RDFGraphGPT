@@ -13,7 +13,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Define la ruta a la carpeta static
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -102,13 +102,14 @@ io:hasDetail [ a io:TemporalFeature ;
     io:province io:province_Bs.As.%20Costa%20Atlántica ] ] .
 """
 
-#funcion para pasar a dot
+
+# funcion para pasar a dot
 def rdf_to_dot(rdf_file, dot_file):
-    # Crear un nuevo grafo RDF    
+    # Crear un nuevo grafo RDF
     g = rdflib.Graph()
     try:
         # Cargar el archivo RDF
-        g.parse(rdf_file, format='ttl')
+        g.parse(rdf_file, format="ttl")
     except Exception as e:
         return f"Error parsing RDF file: {e}"
 
@@ -122,7 +123,7 @@ def rdf_to_dot(rdf_file, dot_file):
             dot.add_node(str(subj), label=str(subj))
             dot.add_node(str(obj), label=str(obj))
             dot.add_edge(str(subj), str(obj), label=str(pred))
-        
+
     except Exception as e:
         return f"Error creating the graph: {e}"
 
@@ -139,7 +140,8 @@ def rdf_to_dot(rdf_file, dot_file):
     #     dot.draw('pruebas_gpt4/outputImages/output.png')
     # except Exception as e:
     #     print(f"Error visualizing the graph: {e}")
-        
+
+
 def generate_graph(text, place, file_name):
     filename = file_name + ".ttl"
 
@@ -151,28 +153,28 @@ def generate_graph(text, place, file_name):
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
-        
+
     response = api_fetch(text)
-    
-    # Write to the file 
-    if(place == "DIFFERENT"):
+
+    # Write to the file
+    if place == "DIFFERENT":
         with open(file_path, "w") as file:
             file.write(response.choices[0].message.content)
     else:
         with open(file_path, "a") as file:
             file.write(response.choices[0].message.content)
 
-    rdf_file = 'results/' + filename
-    dot_file = 'results/archivo.dot'
+    rdf_file = "results/" + filename
+    dot_file = "results/archivo.dot"
 
     exception = rdf_to_dot(rdf_file, dot_file)
-    
+
     if exception:
         return exception
     else:
-        svg_file = os.path.join(STATIC_DIR, 'archivo.svg')
-        subprocess.run(['dot', '-Tsvg', dot_file, '-o', svg_file])
-        
+        svg_file = os.path.join(STATIC_DIR, "archivo.svg")
+        subprocess.run(["dot", "-Tsvg", dot_file, "-o", svg_file])
+
 
 def generate_ovs_graph(text, place, file_name):
     filename = file_name + ".ttl"
@@ -184,27 +186,28 @@ def generate_ovs_graph(text, place, file_name):
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
-        
+
     response = api_fetch_OVS(text)
-    
-    # Write to the file 
-    if(place == "DIFFERENT"):
+
+    # Write to the file
+    if place == "DIFFERENT":
         with open(file_path, "w") as file:
             file.write(response.choices[0].message.content)
     else:
         with open(file_path, "a") as file:
             file.write(response.choices[0].message.content)
 
-    rdf_file = 'results/' + filename
-    dot_file = 'results/archivo.dot'
+    rdf_file = "results/" + filename
+    dot_file = "results/archivo.dot"
 
     exception = rdf_to_dot(rdf_file, dot_file)
-    
+
     if exception:
         return exception
     else:
-        svg_file = os.path.join(STATIC_DIR, 'archivo.svg')
-        subprocess.run(['dot', '-Tsvg', dot_file, '-o', svg_file])
+        svg_file = os.path.join(STATIC_DIR, "archivo.svg")
+        subprocess.run(["dot", "-Tsvg", dot_file, "-o", svg_file])
+
 
 def generate_graph_having_rdf(rdf_text, place, file_name):
     filename = file_name + ".ttl"
@@ -217,65 +220,107 @@ def generate_graph_having_rdf(rdf_text, place, file_name):
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
-        
+
     with open(file_path, "w") as file:
         file.write(rdf_text)
 
-    rdf_file = 'results/' + filename
-    dot_file = 'results/archivo.dot'
+    rdf_file = "results/" + filename
+    dot_file = "results/archivo.dot"
 
     exception = rdf_to_dot(rdf_file, dot_file)
-    
+
     if exception:
         return exception
     else:
-        svg_file = os.path.join(STATIC_DIR, 'archivo.svg')
-        subprocess.run(['dot', '-Tsvg', dot_file, '-o', svg_file])
-        
+        svg_file = os.path.join(STATIC_DIR, "archivo.svg")
+        subprocess.run(["dot", "-Tsvg", dot_file, "-o", svg_file])
+
+
 def graph_from_file(file_name):
-    rdf_file = 'results/' + file_name + '.ttl'
-    dot_file = 'results/archivo.dot'
+    rdf_file = "results/" + file_name + ".ttl"
+    dot_file = "results/archivo.dot"
 
     exception = rdf_to_dot(rdf_file, dot_file)
-    
+
     if exception:
         return exception
     else:
-        svg_file = os.path.join(STATIC_DIR, 'archivo.svg')
-        subprocess.run(['dot', '-Tsvg', dot_file, '-o', svg_file])
+        svg_file = os.path.join(STATIC_DIR, "archivo.svg")
+        subprocess.run(["dot", "-Tsvg", dot_file, "-o", svg_file])
+
 
 def api_fetch(text):
     response = client.chat.completions.create(
-    model="gpt-4-turbo",
-    messages=[
-        {"role": "system", "content": "You are a helpful RDF turtle format expert. You know how to use clasess, properties and collections."},
-        {"role": "system", "content": "You help translating natural text into rdf turtle format graphs. The explanation of it is not needed."},
-        {"role": "system", "content": "You use wikidata or dbpedia terms whenever you can. Otherwise you use this URI: http://lifia.ar/ontology/ ."},
-        {"role": "user", "content": "Please translate this natural languaje text into RDF turtle format: "+text_example },
-        {"role": "assistant", "content": rdf_example},
-        {"role": "user", "content": "Please translate this natural languaje text into RDF turtle format: "+text }
-    ]
+        model="gpt-4-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful RDF turtle format expert. You know how to use clasess, properties and collections.",
+            },
+            {
+                "role": "system",
+                "content": "You help translating natural text into rdf turtle format graphs. The explanation of it is not needed.",
+            },
+            {
+                "role": "system",
+                "content": "You use wikidata or dbpedia terms whenever you can. Otherwise you use this URI: http://lifia.ar/ontology/ .",
+            },
+            {
+                "role": "user",
+                "content": "Please translate this natural languaje text into RDF turtle format: "
+                + text_example,
+            },
+            {"role": "assistant", "content": rdf_example},
+            {
+                "role": "user",
+                "content": "Please translate this natural languaje text into RDF turtle format: "
+                + text,
+            },
+        ],
     )
     return response
     # +" Please just translate the text, don't add any extra information; and when the response ends, put the string eof."
-    
+
+
 def api_fetch_OVS(text):
     with open("static/inmontology.owl", "r", encoding="utf-8") as f:
         ontology_text = f.read()
-        
+
     response = client.chat.completions.create(
-    model="gpt-4-turbo",
-    messages=[
-        {"role": "system", "content": "You are a helpful RDF turtle format expert. You know how to use clasess, properties and collections."},
-        {"role": "system", "content": "You help translating natural text into rdf turtle format graphs. The explanation of it is not needed."},
-        {"role": "system", "content": "I need you to use the inmontology.owl terms to build instances of a real estate listings graph."},
-        {"role": "system", "content": "This is the ontology that you have to use:\n" + ontology_text},
-        {"role": "user", "content": "Please translate this natural languaje real estate listing into RDF turtle format instance of the graph: "+text_example_OVS },
-        {"role": "assistant", "content": rdf_example_OVS},
-        {"role": "user", "content": "Please translate this natural languaje real estate listing into RDF turtle format instance of the graph: "+text }
-    ]
+        model="gpt-4-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful RDF turtle format expert. You know how to use clasess, properties and collections.",
+            },
+            {
+                "role": "system",
+                "content": "You help translating natural text into rdf turtle format graphs. The explanation of it is not needed.",
+            },
+            {
+                "role": "system",
+                "content": "I need you to use the inmontology.owl terms to build instances of a real estate listings graph.",
+            },
+            {
+                "role": "system",
+                "content": "This is the ontology that you have to use:\n"
+                + ontology_text,
+            },
+            {
+                "role": "user",
+                "content": "Please translate this natural languaje real estate listing into RDF turtle format instance of the graph: "
+                + text_example_OVS,
+            },
+            {"role": "assistant", "content": rdf_example_OVS},
+            {
+                "role": "user",
+                "content": "Please translate this natural languaje real estate listing into RDF turtle format instance of the graph: "
+                + text,
+            },
+        ],
     )
     return response
+
 
 def search_file(file_name):
     directory = "results"
@@ -286,14 +331,15 @@ def search_file(file_name):
             return file.read()
     else:
         return False
-    
+
+
 def get_files_in_directory(directory_path):
     """
     Retorna una lista de todos los nombres de archivos en el directorio especificado.
-    
+
     Args:
     directory_path (str): Ruta del directorio.
-    
+
     Returns:
     list: Lista de nombres de archivos en el directorio.
     """
@@ -304,21 +350,23 @@ def get_files_in_directory(directory_path):
         # Recorre todos los elementos en el directorio
         for item in os.listdir(directory_path):
             # Obtiene la ruta completa del elemento
-            full_path = os.path.join(directory_path, item)
-            
+            full_path = os.path.join(os.getcwd(), directory_path, item)
+            print(full_path)
+
             # Verifica si el elemento es un archivo
-            if (os.path.isfile(full_path) and item.endswith(".ttl")):
-                files.append(str(item).rsplit('.', 1)[0])
+            if os.path.isfile(full_path) and item.endswith(".ttl"):
+                files.append(str(item).rsplit(".", 1)[0])
 
     except Exception as e:
         print(f"Ocurrió un error al listar los archivos: {e}")
 
     return files
-    
+
+
 def save_file(file_name, rdf_text):
     directory = "results"
     file_path = os.path.join(directory, file_name + ".ttl")
-    
+
     # Write to the file
     with open(file_path, "w") as file:
         file.write(rdf_text)
