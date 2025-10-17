@@ -110,7 +110,7 @@
         <div class="container-fluid">
             <div class="logo-container">
                 <img src="{{url_for('static', filename='chatgpt-logo.png')}}" alt="Logo" class="logo">
-                <a class="navbar-brand" href="{{ url_for('graph') }}">RDFGraphGPT</a>
+                <a class="navbar-brand" href="{{ url_for('ovs_home') }}">RDFGraphGPT</a>
             </div>
         </div>
     </nav>
@@ -118,23 +118,15 @@
     <div class="sidebar">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a  href="{{url_for('graph')}}">Generar nuevo RDF</a>
+                <a  href="{{url_for('ovs_home')}}">Grafo OVS</a>
             </li>
             <li class="nav-item">
-                <a  href="{{url_for('graph_existent')}}">Extender RDF existente</a>
+                <a  href="{{url_for('ovs_new_instance')}}">Crear instancias del grafo</a>
             </li>
             <li class="nav-item">
-                <a  href="{{url_for('graph_from_file')}}">Graficar un archivo RDF</a>
+                <a  href="{{url_for('questions')}}">Preguntarle al grafo</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    OVS + RDFGraphGPT
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{url_for('ovs_new_instance')}}">Crear instancias del grafo</a></li>
-                    <li><a class="dropdown-item" href="{{url_for('questions')}}">Preguntarle al grafo</a></li>
-                </ul>
-            </li>
+            
         </ul>
     </div>
     

@@ -12,7 +12,9 @@
         {% block form_action %}
         <form action="/" method="post">
         {% endblock %}
+        {% block msj_guardado%}
         <label for="place" class="fw-normal">Dónde queres guardar tu rdf?</label>
+        {% endblock %}
     {% block guardado %}
         <div>
             <div class="input-group mb-3">
@@ -21,10 +23,12 @@
             </div>
         </div>
     {% endblock %}
+    {% block input %}
         <div class="input-group">
             <span class="input-group-text">Describe tu grafo</span>
             <textarea name="text" id="text" rows="10" class="form-control" aria-label="With textarea"></textarea>
         </div>
+    {% endblock %}
         <label for="api-key" class="form-label"></label>
         <br/>
         <div class="d-grid gap-2">

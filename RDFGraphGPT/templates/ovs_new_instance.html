@@ -7,3 +7,15 @@
     <h2 class="fw-light">Crear instancia del grafo de OVS</h2>
     <p class="fst-italic">Ingresa un anuncio de inmueble que quieras añadir al grafo de OVS!!</p>
 {% endblock %}
+{% block msj_guardado %}
+    <div></div>
+{% endblock %}
+{% block guardado %}
+    <p>El grafo que se va a utilizar es: <b>{{ nombre_grafo }}</b></p>
+{% endblock %}
+{% block input %}
+    <div class="input-group">
+        <span class="input-group-text">Describe tu grafo</span>
+        <textarea readonly name="text" id="text" rows="10" class="form-control" aria-label="With textarea">{{ text_area_value }}</textarea>
+    </div>
+{% endblock %}
